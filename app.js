@@ -1,0 +1,133 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const exphbs = require('express-handlebars');
+const path = require('path');
+const nodemailer = require('nodemailer');
+const { google } = require("googleapis");
+var QRCode = require('qrcode')
+var { DateTime } = require('luxon');
+var uuid = require('uuid');
+
+const app = express();
+
+
+
+
+
+
+// View engine setup
+app.engine('.hbs', exphbs({
+  extname: '.hbs',
+  defaultLayout: 'contact',
+  layoutsDir: path.join(__dirname, 'views')
+}));
+app.set('view engine', '.hbs');
+app.set('views',path.join(__dirname,'views'))
+// Static folder
+app.use('/public', express.static(path.join(__dirname, 'public')));
+
+// Body Parser Middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+
+app.get('/', (req, res) => {
+  res.render('contact');
+});
+
+app.post('/send', async (req, res) => {
+
+
+  let id = uuid.v4();
+  //const qrcode = await QRCode.toDataURL(id);
+  const qrcode = '=Image("'+ 'https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=' + id +'")';
+  const output = `
+    <p>Successfully submitted! Thank you!</p>
+    <h3>Contact Details</h3>
+    <ul>  
+      <li>Name: ${req.body.name}</li>
+      <li>Company: ${req.body.company}</li>
+      <li>Email: ${req.body.email}</li>
+      <li>Phone: ${req.body.phone}</li>
+      <li>QrCode: <img src="${'https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=' + id}"></li>
+    </ul>
+    <h3>Message</h3>
+    <p>${req.body.message}</p>
+  `;
+
+
+  const auth = new google.auth.GoogleAuth({
+    keyFile: "credentials.json",
+    scopes: "https://www.googleapis.com/auth/spreadsheets",
+  });
+
+  // Create client instance for auth
+  const client = await auth.getClient();
+
+  // Instance of Google Sheets API
+  const googleSheets = google.sheets({ version: "v4", auth: client });
+
+  const spreadsheetId = "1UwI_mntoJqBcsKqBulmrDsm8SjIIpTyM4DMdQE-5phc";
+
+  // Get metadata about spreadsheet
+  const metaData = await googleSheets.spreadsheets.get({
+    auth,
+    spreadsheetId,
+  });
+
+ 
+  let d = DateTime.local();
+  let date_ob = d;
+  //console.log(d); //Asia/Saigon
+    // Clear 
+  
+  
+  // Write row(s) to spreadsheet
+  await googleSheets.spreadsheets.values.append({
+    auth,
+    spreadsheetId,
+    range: "Users!A:F",
+    valueInputOption: "USER_ENTERED",
+    resource: {
+      values: [[date_ob, req.body.name, req.body.email,req.body.phone, id, qrcode]],
+    },
+  });
+
+
+  // create reusable transporter object using the default SMTP transport
+  let transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    secure: false, // true for 465, false for other ports
+    auth: {
+        user: 'htlam164@gmail.com', // generated ethereal user
+        pass: 'Khongbocuoc999#'  // generated ethereal password
+    },
+    tls:{
+      rejectUnauthorized:false
+    }
+  });
+  console.log(req.body.email);
+  // setup email data with unicode symbols
+  let mailOptions = {
+      from: '"Nodemailer Contact" <htlam164@gmail.com>', // sender address
+      to: req.body.email, // list of receivers
+      subject: 'Node Contact Request', // Subject line
+      text: 'Hello world?', // plain text body
+      html: output // html body
+  };
+
+  // send mail with defined transport object
+  transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+          return console.log(error);
+      }
+      console.log('Message sent: %s', info.messageId);   
+      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+      
+        res.render('contact', {msg:'Email has been sent'});
+
+      
+  });
+  });
+const PORT = 3000;
+app.listen(process.env.PORT || PORT, () => console.log('Server started...'));
