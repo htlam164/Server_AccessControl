@@ -8,9 +8,20 @@ var QRCode = require('qrcode')
 var { DateTime } = require('luxon');
 var uuid = require('uuid');
 
+const OAuth2 = google.auth.OAuth2;
 const app = express();
 
 
+const oauth2Client = new OAuth2(
+  "491941003687-09mso6qnive258krp2nvrhm3cp8as7ts.apps.googleusercontent.com", // ClientID
+  "2uwy7ppBT_RvshcBxiQTUuM1", // Client Secret
+  "https://developers.google.com/oauthplayground" // Redirect URL
+);
+
+oauth2Client.setCredentials({
+  refresh_token: "1//042tzPOB3e-j-CgYIARAAGAQSNwF-L9Ir3bKnAZBB5ZDYlVH-NLdJRmeb5ZBuJb3vNbgy85QkruKiGm_oC4G_QPHc8ktEup_uhiM"
+});
+const accessToken = oauth2Client.getAccessToken()
 
 
 
@@ -95,15 +106,15 @@ app.post('/send', async (req, res) => {
 
 
   // create reusable transporter object using the default SMTP transport
-  let transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    secure: false, // true for 465, false for other ports
+  const smtpTransport = nodemailer.createTransport({
+    service: "gmail",
     auth: {
-        user: 'htlam164@gmail.com', // generated ethereal user
-        pass: 'Khongbocuoc999#'  // generated ethereal password
-    },
-    tls:{
-      rejectUnauthorized:false
+         type: "OAuth2",
+         user: "htlam164@gmail.com", 
+         clientId: "491941003687-09mso6qnive258krp2nvrhm3cp8as7ts.apps.googleusercontent.com",
+         clientSecret: "2uwy7ppBT_RvshcBxiQTUuM1",
+         refreshToken: "1//042tzPOB3e-j-CgYIARAAGAQSNwF-L9Ir3bKnAZBB5ZDYlVH-NLdJRmeb5ZBuJb3vNbgy85QkruKiGm_oC4G_QPHc8ktEup_uhiM",
+         accessToken: accessToken
     }
   });
   console.log(req.body.email);
@@ -117,7 +128,7 @@ app.post('/send', async (req, res) => {
   };
 
   // send mail with defined transport object
-  transporter.sendMail(mailOptions, (error, info) => {
+  smtpTransport.sendMail(mailOptions, (error, info) => {
       if (error) {
           return console.log(error);
       }
