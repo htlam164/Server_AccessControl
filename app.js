@@ -4,7 +4,6 @@ const exphbs = require('express-handlebars');
 const path = require('path');
 const nodemailer = require('nodemailer');
 const { google } = require("googleapis");
-var QRCode = require('qrcode')
 var { DateTime } = require('luxon');
 var uuid = require('uuid');
 
