@@ -50,7 +50,7 @@ app.post('/send', async (req, res) => {
 
   let id = uuid.v4();
   //const qrcode = await QRCode.toDataURL(id);
-  const qrcode = '=Image("'+ 'https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=' + id +'")';
+  const qrcode = '=Image("'+ 'https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=' + req.body.phone +'")';
   const output = `
     <p>Successfully submitted! Thank you!</p>
     <h3>Contact Details</h3>
@@ -59,7 +59,7 @@ app.post('/send', async (req, res) => {
       <li>Company: ${req.body.company}</li>
       <li>Email: ${req.body.email}</li>
       <li>Phone: ${req.body.phone}</li>
-      <li>QrCode: <img src="${'https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=' + id}"></li>
+      <li>QrCode: <img src="${'https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=' + req.body.phone}"></li>
     </ul>
     <h3>Message</h3>
     <p>${req.body.message}</p>
