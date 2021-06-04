@@ -86,7 +86,7 @@ app.post('/send', async (req, res) => {
   });
 
  
-  let d = DateTime.TIME_SIMPLE();
+  let d = DateTime.TIME_SIMPLE;
   let date_ob = d;
   let date_ob_set = "12/30/2030"
   //console.log(d); //Asia/Saigon
