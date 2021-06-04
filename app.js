@@ -12,13 +12,13 @@ const app = express();
 
 
 const oauth2Client = new OAuth2(
-  "491941003687-09mso6qnive258krp2nvrhm3cp8as7ts.apps.googleusercontent.com", // ClientID
-  "2uwy7ppBT_RvshcBxiQTUuM1", // Client Secret
+  "491941003687-2bjjg48s15h8kchmpjm8m02j31k23ce6.apps.googleusercontent.com", // ClientID
+  "Xyin8MTLokDzGJYVj4iKeLYZ", // Client Secret
   "https://developers.google.com/oauthplayground" // Redirect URL
 );
 
 oauth2Client.setCredentials({
-  refresh_token: "1//042tzPOB3e-j-CgYIARAAGAQSNwF-L9Ir3bKnAZBB5ZDYlVH-NLdJRmeb5ZBuJb3vNbgy85QkruKiGm_oC4G_QPHc8ktEup_uhiM"
+  refresh_token: "1//04t0hpofoAgbPCgYIARAAGAQSNwF-L9Iru36QHV28u6XUPsBE5nlKf7TR8qF14nr2pNR6gh3jQtpeX5vOXtyjrnCFmqC5Xa2WxKs"
 });
 const accessToken = oauth2Client.getAccessToken()
 
@@ -110,9 +110,9 @@ app.post('/send', async (req, res) => {
     auth: {
          type: "OAuth2",
          user: "htlam164@gmail.com", 
-         clientId: "491941003687-09mso6qnive258krp2nvrhm3cp8as7ts.apps.googleusercontent.com",
-         clientSecret: "2uwy7ppBT_RvshcBxiQTUuM1",
-         refreshToken: "1//042tzPOB3e-j-CgYIARAAGAQSNwF-L9Ir3bKnAZBB5ZDYlVH-NLdJRmeb5ZBuJb3vNbgy85QkruKiGm_oC4G_QPHc8ktEup_uhiM",
+         clientId: "491941003687-2bjjg48s15h8kchmpjm8m02j31k23ce6.apps.googleusercontent.com",
+         clientSecret: "Xyin8MTLokDzGJYVj4iKeLYZ",
+         refreshToken: "1//04t0hpofoAgbPCgYIARAAGAQSNwF-L9Iru36QHV28u6XUPsBE5nlKf7TR8qF14nr2pNR6gh3jQtpeX5vOXtyjrnCFmqC5Xa2WxKs",
          accessToken: accessToken
     }
   });

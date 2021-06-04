@@ -13,9 +13,9 @@
     "body-parser": "^1.17.2",
     "express": "^4.15.4",
     "express-handlebars": "^3.0.0",
-    "googleapis": "^74.0.0",
+    "googleapis": "^74.2.0",
     "luxon": "^1.27.0",
-    "nodemailer": "^4.1.0",
+    "nodemailer": "^4.7.0",
     "uuid": "^8.3.2"
   }
 }
