@@ -6,6 +6,7 @@ const nodemailer = require('nodemailer');
 const { google } = require("googleapis");
 var { DateTime } = require('luxon');
 var uuid = require('uuid');
+const moment = require("moment");
 
 const OAuth2 = google.auth.OAuth2;
 const app = express();
@@ -86,9 +87,9 @@ app.post('/send', async (req, res) => {
   });
 
  
-  let d = DateTime.TIME_SIMPLE;
-  let date_ob = d;
-  let date_ob_set = "12/30/2030"
+  let d = DateTime.local();
+  let date_ob = moment().format("DD/MM/YYYY");
+  let date_ob_set = "12/30/2030";
   //console.log(d); //Asia/Saigon
     // Clear 
   
@@ -100,7 +101,7 @@ app.post('/send', async (req, res) => {
     range: "Users!A:G",
     valueInputOption: "USER_ENTERED",
     resource: {
-      values: [[date_ob,date_ob_set, req.body.name, req.body.email,req.body.phone, id, qrcode]],
+      values: [[date_ob, date_ob_set, req.body.name, req.body.email,req.body.phone, id, qrcode]],
     },
   });
 
