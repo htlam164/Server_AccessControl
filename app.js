@@ -102,7 +102,7 @@ app.post('/send', async (req, res) => {
     range: "Users!A:E",
     valueInputOption: "USER_ENTERED",
     resource: {
-      values: [[req.body.name,req.body.phone, req.body.email, qrcode, req.body.company]],
+      values: [[req.body.name,req.body.phone.slice(1), req.body.email, qrcode, req.body.company]],
     },
   });
 
