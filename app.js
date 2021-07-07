@@ -101,7 +101,7 @@ app.post('/send', async (req, res) => {
     range: "Users!A:G",
     valueInputOption: "USER_ENTERED",
     resource: {
-      values: [[date_ob, date_ob_set, req.body.name, req.body.email,req.body.phone, id, qrcode]],
+      values: [[req.body.name,req.body.phone, req.body.company]],
     },
   });
 
@@ -121,10 +121,10 @@ app.post('/send', async (req, res) => {
   console.log(req.body.email);
   // setup email data with unicode symbols
   let mailOptions = {
-      from: '"Nodemailer Contact" <htlam164@gmail.com>', // sender address
+      from: '"ACCESS CONTROL DEV" <htlam164@gmail.com>', // sender address
       to: req.body.email, // list of receivers
-      subject: 'Node Contact Request', // Subject line
-      text: 'Hello world?', // plain text body
+      subject: 'Contact Request', // Subject line
+      text: 'Infor User', // plain text body
       html: output // html body
   };
 
