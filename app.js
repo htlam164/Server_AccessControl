@@ -98,7 +98,7 @@ app.post('/send', async (req, res) => {
   await googleSheets.spreadsheets.values.append({
     auth,
     spreadsheetId,
-    range: "Users!A:C",
+    range: "Users!A:E",
     valueInputOption: "USER_ENTERED",
     resource: {
       values: [[req.body.name,req.body.phone, , req.body.email, qrcode, req.body.company]],
