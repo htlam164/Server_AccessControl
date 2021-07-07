@@ -101,7 +101,7 @@ app.post('/send', async (req, res) => {
     range: "Users!A:C",
     valueInputOption: "USER_ENTERED",
     resource: {
-      values: [[req.body.name,req.body.phone, req.body.company]],
+      values: [[req.body.name,req.body.phone, , req.body.email, qrcode, req.body.company]],
     },
   });
 
@@ -121,9 +121,9 @@ app.post('/send', async (req, res) => {
   console.log(req.body.email);
   // setup email data with unicode symbols
   let mailOptions = {
-      from: '"ACCESS CONTROL DEV" <htlam164@gmail.com>', // sender address
+      from: '"Admin" <htlam164@gmail.com>', // sender address
       to: req.body.email, // list of receivers
-      subject: 'Contact Request', // Subject line
+      subject: 'ACCESS CONTROL', // Subject line
       text: 'Infor User', // plain text body
       html: output // html body
   };
